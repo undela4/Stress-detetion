@@ -10,7 +10,6 @@ exports.UploadStressData=(req, res,next) => {
     Time:req.body.time
    }
 
-
   if (!file) {
     return res.status(400).send({status:false,message:'No video file uploaded.'});
   }

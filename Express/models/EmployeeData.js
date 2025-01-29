@@ -16,4 +16,4 @@ const stressSchema = new mongoose.Schema({
 
 
 
-module.exports=mongoose.model('StressData', stressSchema);
+module.exports=mongoose.model('stressdatas', stressSchema);

@@ -1,4 +1,4 @@
-const  StressData =require('../models/EmployeeData.js')
+const  stressdatas =require('../models/EmployeeData.js')
 
 exports.Upload_Stress_Data=async (req, res) => {
 
@@ -26,7 +26,7 @@ exports.Get_Stress_Data=async (req, res) => {
     try{
 
         const id = req.params.id;
-        const data = await StressData.find({EmployeeId:id});
+        const data = await stressdatas.find({EmployeeId:id});
         res.status(200).send({status:true,data:data}) 
     }
     catch(err){
