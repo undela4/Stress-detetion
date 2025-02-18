@@ -1,6 +1,7 @@
 
 // Define an upload route
 exports.UploadStressData=(req, res,next) => {
+  
   const file = req.file;
 
    req.EmpData = {
@@ -17,6 +18,7 @@ exports.UploadStressData=(req, res,next) => {
 //   console.log(`Video uploaded: ${file.filename}`);
 
 //   res.status(200).send({ status:true,message: 'Upload successful'});
+
   next();
 
 

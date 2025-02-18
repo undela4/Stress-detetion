@@ -1,7 +1,7 @@
 import {toast } from 'react-toastify';
 
 
-export function onsuccuse(msg)
+export function onsuccess(msg)
 {
     toast.success(msg);
 }

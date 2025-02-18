@@ -2,13 +2,16 @@
     display: flex;
     justify-content:space-around;
     align-items: center;
-    height: 40px;
+    height: 60px;
     text-decoration: none;
+    background-color: #10898D
+    ;
 
 }
 .logo {
-    width: 80px;
-    height:80px;
+    width:60px;
+    height:60px;
+    border-radius: 50%;
 
 
 }

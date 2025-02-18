@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {onerror,oninfo,onsuccess} from '../../../toast.js';
 
 export const uploadVideoToServer = async (blob) => {
     // Create a FormData object to store the file
@@ -10,7 +11,6 @@ export const uploadVideoToServer = async (blob) => {
     formData.append('date',date)
     formData.append('time',time)
     formData.append('EmployeeId',2)
-
     formData.append('video', blob, fileName);
     console.log(formData)
   
@@ -23,8 +23,17 @@ export const uploadVideoToServer = async (blob) => {
 
       console.log(response);
       if (response.data.status) 
+
       {
         console.log('Upload successful!',response.data);
+        const sl = response.data.data.StressDetails.final_stress_percentage;
+        if(s1>60){
+          onerror('Stress level is high, take a rest.')
+        }
+        console.log(sl)
+         
+
+
       }
     } catch (error) {
       console.log(error)

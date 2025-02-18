@@ -2,12 +2,19 @@ import cv2
 from deepface import DeepFace
 import json
 import sys
+import os
 from collections import defaultdict
 
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+output_dir = "processed_frames"
+os.makedirs(output_dir, exist_ok=True)
+
 # Function to classify emotions linked to stress
+
 def is_stressful_emotion(emotion):
     stress_emotions = ['angry', 'fear', 'sad', 'disgust']
     return emotion in stress_emotions
+
 
 def analyze_stress_from_video(video_path):
     cap = cv2.VideoCapture(video_path)
@@ -18,14 +25,17 @@ def analyze_stress_from_video(video_path):
 
     stress_count = 0
     total_frames = 0
-    frame_skip = 1  # Analyze every 5th frame
+    frame_skip = 1  # Analyze every nth frame
     stress_percentage_over_time = []
     time_per_frame = []
     
     # Dictionary to count occurrences of each emotion
     emotion_counts = defaultdict(int)
 
-    fps = cap.get(cv2.CAP_PROP_FPS)  # Get the frames per second
+    fps = cap.get(cv2.CAP_PROP_FPS) 
+    # print(fps)
+    # Get the frames per second
+    
 
     while cap.isOpened():
         ret, frame = cap.read()
@@ -40,9 +50,20 @@ def analyze_stress_from_video(video_path):
 
         try:
             # Analyze emotions in the current frame
-            resized_frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)  # Resize for faster processing
-            results = DeepFace.analyze(resized_frame, actions=['emotion'], enforce_detection=False)
-            
+            faces = face_cascade.detectMultiScale(frame, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+            faces = faces[:1]
+            for (x, y, w, h) in faces:
+                # Extract the face ROI (Region of Interest)
+                face_roi = frame[y:y + h, x:x + w]
+                results = DeepFace.analyze(face_roi, actions=['emotion'], enforce_detection=False)
+                dominant_emotion = results[0]['dominant_emotion']
+                
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
+                cv2.putText(frame, dominant_emotion, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
+                
+                frame_filename = os.path.join(output_dir, f"frame_{total_frames}.jpg")
+                cv2.imwrite(frame_filename, frame) #saving  each frame
+                
             if isinstance(results, list) and len(results) > 0:
                 dominant_emotion = results[0]['dominant_emotion']
 
@@ -53,8 +74,7 @@ def analyze_stress_from_video(video_path):
                 # Update the count for the dominant emotion
                 emotion_counts[dominant_emotion] += 1
 
-                # Calculate stress percentage at this frame
-                stress_percentage = (stress_count / total_frames) * 100
+            
 
         except Exception as e:
             print(f"Error analyzing frame {total_frames}: {e}")
@@ -76,6 +96,7 @@ def analyze_stress_from_video(video_path):
         "most_repeated_count": most_repeated_count,
         "emotion_counts": dict(emotion_counts)  # Include counts of all emotions
     }
+    
     print(json.dumps(results))
 
 if __name__ == "__main__":

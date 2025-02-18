@@ -6,8 +6,10 @@ const Video_Capture = () => {
 
   const [isRecording, setIsRecording] = useState(false);
   const [videoURL, setVideoURL] = useState(null);
+
   const [error, setError] = useState('');
   const mediaRecorderRef = useRef(null);
+
   const videoChunksRef = useRef([]);
   const videoRef = useRef(null);
   
@@ -51,6 +53,7 @@ const Video_Capture = () => {
   };
 
   const stopRecording = () => {
+
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
@@ -60,20 +63,20 @@ const Video_Capture = () => {
   };
 
   return (
-    <div>
+    <div className='w-50 m-auto border border-5 border-success rounded p-3 d-flex flex-column gap-2'>
 
-      <h2>Video Recorder</h2>
+      <h2 className='text-center'>Video Recorder</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <video ref={videoRef} autoPlay muted style={{ width: '400px', height: '300px' }}></video>
       <div>
         {!isRecording ? (
-          <button onClick={startRecording}>Start Recording</button>
+          <button className='btn btn-outline-success' onClick={startRecording}>Start Recording</button>
         ) : (
-          <button onClick={stopRecording}>Stop Recording</button>
+          <button className='btn btn-outline-warning' onClick={stopRecording}>Stop Recording</button>
         )}
       </div>
       {videoURL && (
-        <div>
+        <div >
           <h3>Recorded Video</h3>
           <video src={videoURL} controls style={{ width: '400px', height: '300px' }}></video>
           <a href={videoURL} download="recorded-video.webm">

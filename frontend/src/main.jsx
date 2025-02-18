@@ -4,11 +4,14 @@ import App from './App.jsx';
 import  {BrowserRouter} from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle.js'
-
+import { Context } from './usecontext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <App />
+  <Context>
+  <App />
+
+  </Context>
   </BrowserRouter>
 
 

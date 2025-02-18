@@ -7,8 +7,7 @@ import { oninfo, onwarning, onerror } from '../../../toast';
 export function VideoCapture() {
   const videoRef = useRef();
   const canvasRef = useRef();
-  const [stressLevel, setStressLevel] = useState(0); // State to store stress level
-
+  const [stressLevel, setStressLevel] = useState(0); 
 
       useEffect(() => {
       startVideo();

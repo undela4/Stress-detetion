@@ -26,7 +26,12 @@ exports.Get_Stress_Data=async (req, res) => {
     try{
 
         const id = req.params.id;
-        const data = await stressdatas.find({EmployeeId:id});
+        var data;
+        if(id==0){
+         data = await stressdatas.find();
+        }else{
+             data = await stressdatas.find({EmployeeId:id});
+        }
         res.status(200).send({status:true,data:data}) 
     }
     catch(err){

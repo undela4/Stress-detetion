@@ -6,6 +6,7 @@ import { time } from "ag-charts-community";
 export function Chart({ options }) {
 
   const [chartOptions, setChartOptions] = useState();
+  console.log(options)
 
  useEffect(()=>{
   setChartOptions({
@@ -69,7 +70,6 @@ export function Chart({ options }) {
 
  },[options])
 
-console.log(options)
   
  
   return (
