@@ -1,5 +1,8 @@
 import axios from 'axios';
 import {onerror,oninfo,onsuccess} from '../../../toast.js';
+import Cooikes from 'js-cookies';
+
+const empId = Cooikes.getItem('user');
 
 export const uploadVideoToServer = async (blob) => {
     // Create a FormData object to store the file
@@ -10,7 +13,7 @@ export const uploadVideoToServer = async (blob) => {
     const time = `${d.getHours()}:${d.getMinutes()}`
     formData.append('date',date)
     formData.append('time',time)
-    formData.append('EmployeeId',2)
+    formData.append('EmployeeId',empId)
     formData.append('video', blob, fileName);
     console.log(formData)
   

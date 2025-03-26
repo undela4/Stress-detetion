@@ -34,19 +34,23 @@ const Dashboard = () => {
 
   return stressData&&(
     <>
-      <Navbar/>
+     <Navbar/>
     <div className="dashboard">
       <h1 className='text-center'>{} Employee Stress Levels</h1>
       <div className=" d-flex justify-content-between">
         <h3>Employee_id:   {emp}</h3>
         <Filter orginal={s1} stressData={stressData} setStressData={setStressData} />
       </div>
-
       <Chart options={stressData} />
+      <div className="d-flex gap-5">
       <div className="w-50">
-      <PieChart data={stressData} />
-      </div>      
-
+     <PieChart data={stressData} />
+    </div>   
+    <div className="w-50 d-flex justify-content-start ">
+      <h2>Summary</h2>
+    </div>
+      </div>
+        
 
 
     </div>

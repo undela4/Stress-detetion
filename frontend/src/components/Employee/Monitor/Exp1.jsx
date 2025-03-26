@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import {uploadVideoToServer} from './methods.js'
-
+import Navbar from '../../Navbar/Navbar.jsx';
 const Video_Capture = () => {
 
 
@@ -63,8 +63,9 @@ const Video_Capture = () => {
   };
 
   return (
+    <>
+      <Navbar/>
     <div className='w-50 m-auto border border-5 border-success rounded p-3 d-flex flex-column gap-2'>
-
       <h2 className='text-center'>Video Recorder</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <video ref={videoRef} autoPlay muted style={{ width: '400px', height: '300px' }}></video>
@@ -85,6 +86,8 @@ const Video_Capture = () => {
         </div>
       )}
     </div>
+    </>
+
   );
 };
 

@@ -9,6 +9,13 @@ face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_fronta
 output_dir = "processed_frames"
 os.makedirs(output_dir, exist_ok=True)
 
+emotion_labels = ['Anger', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
+
+# Stress-related emotions
+stress_emotions = {'Anger', 'Disgust', 'Fear', 'Sad'}
+
+# Load the pre-trained model (ensure you have your trained model saved as 'emotion_model.h5')
+model = tf.keras.models.load_model('C:/Users/Undela murali/Downloads/my_model.keras')
 # Function to classify emotions linked to stress
 
 def is_stressful_emotion(emotion):
@@ -25,7 +32,7 @@ def analyze_stress_from_video(video_path):
 
     stress_count = 0
     total_frames = 0
-    frame_skip = 1  # Analyze every nth frame
+    frame_skip = 60  # Analyze every nth frame
     stress_percentage_over_time = []
     time_per_frame = []
     
@@ -55,8 +62,12 @@ def analyze_stress_from_video(video_path):
             for (x, y, w, h) in faces:
                 # Extract the face ROI (Region of Interest)
                 face_roi = frame[y:y + h, x:x + w]
-                results = DeepFace.analyze(face_roi, actions=['emotion'], enforce_detection=False)
-                dominant_emotion = results[0]['dominant_emotion']
+                
+                predictions = model.predict(face_roi)
+                predicted_class = np.argmax(predictions, axis=1)
+                dominant_emotion = emotion_labels[predicted_class[0]]
+               
+    
                 
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
                 cv2.putText(frame, dominant_emotion, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
@@ -106,3 +117,7 @@ if __name__ == "__main__":
 
     video_path = sys.argv[1]
     analyze_stress_from_video(video_path)
+
+
+results = DeepFace.analyze(face_roi, actions=['emotion'], enforce_detection=False)
+dominant_emotion = results[0]['dominant_emotion']
